@@ -1,35 +1,67 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import ProtectedOne from "./pages/ProtectedOne";
+import ProtectedTwo from "./pages/ProtectedTwo";
+import ProtectedRoute from "./components/ProtectedRoute";
+import api from "./api";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isAuth, setIsAuth] = useState(false);
+
+  // Допустим, мы хотим при загрузке приложения проверить авторизацию 1 раз
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  // Функция для проверки авторизации
+  const checkAuth = async () => {
+    try {
+      await api.get("/protected"); // если 200 - всё ок
+      setIsAuth(true);
+    } catch (err) {
+      // если ошибка - значит не авторизованы
+      setIsAuth(false);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      {/* Передаём isAuth и setIsAuth в NavBar, чтобы там менять кнопки */}
+      <NavBar isAuth={isAuth} setIsAuth={setIsAuth} />
+
+      <Routes>
+        {/* Главная страница */}
+        <Route path="/" element={<Home />} />
+
+        {/* Регистрация и Логин */}
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
+
+        {/* Защищённые страницы */}
+        <Route
+          path="/protected1"
+          element={
+            <ProtectedRoute setIsAuth={setIsAuth}>
+              <ProtectedOne />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/protected2"
+          element={
+            <ProtectedRoute setIsAuth={setIsAuth}>
+              <ProtectedTwo />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
