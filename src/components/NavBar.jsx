@@ -1,18 +1,15 @@
-// src/components/NavBar.jsx
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api";
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 
 function NavBar({ isAuth, setIsAuth }) {
   const navigate = useNavigate();
 
-  // Обработчик выхода (Exit)
   const handleLogout = async () => {
     try {
       await api.post("/logout");
-      // Если всё ок, ставим isAuth в false
       setIsAuth(false);
-      // И перебрасываем на / (или /login)
       navigate("/login");
     } catch (err) {
       console.error("Ошибка при логауте:", err);
@@ -20,27 +17,31 @@ function NavBar({ isAuth, setIsAuth }) {
   };
 
   return (
-    <nav style={{ padding: "1rem", borderBottom: "1px solid #ccc" }}>
-      {/* Если user НЕ авторизован */}
-      {!isAuth && (
-        <>
-          <Link to="/register" style={{ marginRight: "1rem" }}>
-            Register
-          </Link>
-          <Link to="/login" style={{ marginRight: "1rem" }}>
-            Login
-          </Link>
-        </>
-      )}
+    <AppBar position="static" color="primary">
+      <Toolbar>
+        <Box sx={{ flexGrow: 1 }} /> {/* Раздвигаем содержимое вправо */}
 
-      {/* Если user АВТОРИЗОВАН */}
-      {isAuth && (
-        <>
-          "Имя пользователя"
-          <button onClick={handleLogout}>Exit</button>
-        </>
-      )}
-    </nav>
+        {!isAuth ? (
+          <>
+            <Button color="inherit" component={Link} to="/register">
+              Регистрация
+            </Button>
+            <Button color="inherit" component={Link} to="/login">
+              Вход
+            </Button>
+          </>
+        ) : (
+          <>
+            <Typography variant="h6" sx={{ mr: 2 }}>
+              Имя пользователя
+            </Typography>
+            <Button color="inherit" onClick={handleLogout}>
+              Выйти
+            </Button>
+          </>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 }
 

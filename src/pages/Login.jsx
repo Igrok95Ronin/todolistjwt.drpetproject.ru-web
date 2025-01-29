@@ -1,7 +1,15 @@
-// src/pages/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  Alert,
+  Box,
+} from "@mui/material";
 
 function Login({ setIsAuth }) {
   const navigate = useNavigate();
@@ -19,7 +27,7 @@ function Login({ setIsAuth }) {
       // Ставим isAuth в true
       setIsAuth(true);
 
-      // Перебрасываем на /protected1
+      // Перебрасываем на главную страницу
       navigate("/");
     } catch (error) {
       console.error("Ошибка при логине:", error);
@@ -28,23 +36,45 @@ function Login({ setIsAuth }) {
   };
 
   return (
-    <div>
-      <h2>Вход</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <br />
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        <div>
-          <label>Password:</label>
-          <br />
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <button type="submit">Войти</button>
-      </form>
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-    </div>
+    <Container maxWidth="xs">
+      <Paper elevation={3} sx={{ padding: 4, mt: 6, textAlign: "center" }}>
+        <Typography variant="h5" component="h2" gutterBottom>
+          Вход
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            label="Email"
+            variant="outlined"
+            margin="normal"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <TextField
+            fullWidth
+            label="Пароль"
+            variant="outlined"
+            margin="normal"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <Box mt={2}>
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Войти
+            </Button>
+          </Box>
+        </form>
+        {errorMessage && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {errorMessage}
+          </Alert>
+        )}
+      </Paper>
+    </Container>
   );
 }
 
