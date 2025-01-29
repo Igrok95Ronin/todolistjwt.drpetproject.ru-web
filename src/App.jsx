@@ -5,8 +5,6 @@ import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import ProtectedOne from "./pages/ProtectedOne";
-import ProtectedTwo from "./pages/ProtectedTwo";
 import ProtectedRoute from "./components/ProtectedRoute";
 import api from "./api";
 
@@ -35,27 +33,17 @@ function App() {
       <NavBar isAuth={isAuth} setIsAuth={setIsAuth} />
 
       <Routes>
-        {/* Главная страница */}
-        <Route path="/" element={<Home />} />
-
         {/* Регистрация и Логин */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
 
         {/* Защищённые страницы */}
+        {/* Главная страница */}
         <Route
-          path="/protected1"
+          path="/"
           element={
             <ProtectedRoute setIsAuth={setIsAuth}>
-              <ProtectedOne />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/protected2"
-          element={
-            <ProtectedRoute setIsAuth={setIsAuth}>
-              <ProtectedTwo />
+              <Home />
             </ProtectedRoute>
           }
         />
