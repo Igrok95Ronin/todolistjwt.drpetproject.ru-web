@@ -1,0 +1,18 @@
+.container::-webkit-scrollbar {
+  width: 4px; /* ширина вертикального скроллбара */
+  height: 8px; /* высота горизонтального скроллбара */
+}
+
+.container::-webkit-scrollbar-track {
+  background: #f0f0f0; /* цвет фона дорожки */
+  border-radius: 4px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: #888; /* цвет ползунка */
+  border-radius: 4px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: #555; /* цвет ползунка при наведении */
+}
