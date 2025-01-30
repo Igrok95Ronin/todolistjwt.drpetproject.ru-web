@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8081", // ваш Go-сервер
+  baseURL: "https://apitodolistjwt.drpetproject.ru", // ваш Go-сервер
   withCredentials: true, // обязательно, чтобы отправлять куки
 });
 
