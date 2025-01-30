@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
-import {
-  Container,
-  TextField,
-  Button,
-  Typography,
-  Paper,
-  Alert,
-  Box,
-} from "@mui/material";
+import { Container, TextField, Button, Typography, Paper, Alert, Box } from "@mui/material";
 
 function Login({ setIsAuth }) {
   const navigate = useNavigate();
@@ -31,7 +23,11 @@ function Login({ setIsAuth }) {
       navigate("/");
     } catch (error) {
       console.error("Ошибка при логине:", error);
-      setErrorMessage(error.response?.data || "Неизвестная ошибка");
+      if (error.response && error.response.status === 401) {
+        setErrorMessage("Неверные логин или пароль!");
+      } else {
+        setErrorMessage("Ошибка сервера. Попробуйте позже.");
+      }
     }
   };
 
